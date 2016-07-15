@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:util="http://www.springframework.org/schema/util" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xsi:schemaLocation="
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+    http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+    http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<!-- 通配符说明： -->
+	<!-- 1、在classpath后面的*必不可少，缺少*号的话后面的通配符不起作用。 -->
+	<!-- 2、**表示可以表示任意多级目录 -->
+	<!-- 3、*表示多个任意字符 -->
+
+	<!-- 包自动扫描 -->
+	<context:component-scan base-package="net.tfedu.**.dao" />
+	<context:component-scan base-package="net.tfedu.**.service" />
+
+	<!-- enable autowire -->  
+    <context:annotation-config /> 
+
+	<context:property-placeholder location="classpath:jdbc.properties" />
+
+	<!-- Cache配置 -->
+	<cache:annotation-driven cache-manager="cacheManager" />
+	<bean id="cacheManagerFactory" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"
+		p:configLocation="classpath:appilcationContext-cache.xml" />
+	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager"
+		p:cacheManager-ref="cacheManagerFactory" />
+		
+    
+
+</beans>

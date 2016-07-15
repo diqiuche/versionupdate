@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="../Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="../Css/style.css" />
+    <link rel="stylesheet" href="../pageNav/pagination.css" />
+    <style type="text/css">
+        body {
+            padding-bottom: 40px;
+        }
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+
+        @media (max-width: 980px) {
+            /* Enable use of floated navbar text */
+            .navbar-text.pull-right {
+                float: none;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+<form class="form-inline definewidth m20">  
+            产品编码关键字：
+    <input type="text" name="productcode" id="productcode" class="abc input-default" placeholder="" value="">&nbsp;&nbsp;  
+    <button type="button" class="btn btn-primary" id="searchBtn" >检索</button>&nbsp;&nbsp; 
+    <button type="button" class="btn btn-success" id="addnew" style="float:right;margin-right:300px;">新建产品</button>
+</form>
+<table class="table table-bordered table-hover definewidth m10" id='productTable'>
+    <caption align="top" style="font-size:20px;font-weight:bold;margin-bottom:10px;">产品列表</caption>  
+    <thead>
+    <tr>
+        <th>产品编码</th>
+        <th>产品名称</th>
+        <th>产品类型</th>
+        <th>创建日期</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+</table> 
+
+ <!-- 分页组件 -->
+ <div id="Pagination" class="pagination"></div>
+ <!-- 分页设置 -->        
+ <p><input type="hidden" value="8" name="items_per_page" id="items_per_page" class="numeric"/></p>
+ <p><input type="hidden" value="上一页" name="prev_text" id="prev_text"/></p>
+ <p><input type="hidden" value="下一页" name="next_text" id="next_text"/></p>
+</body>
+ <script type="text/javascript" src="../Js/jquery.js"></script>
+ <script type="text/javascript" src="../Js/bootstrap.js"></script>
+ <script type="text/javascript" src="../Js/ckform.js"></script>
+ <script type="text/javascript" src="../Js/common.js"></script>
+ <script type="text/javascript" src="index.js"></script>
+ 
+ <script type="text/javascript" src="../pageNav/jquery.min.js"></script>
+ <script type="text/javascript" src="../pageNav/jquery.pagination.js"></script>
+</html>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.tfedu.productUpdate.dao.ProductVersionMapper" >
+  <resultMap id="BaseResultMap" type="net.tfedu.productUpdate.entity.ProductVersion" >
+    
+       <result column="versioncode" property="code" />
+       <result column="versionname" property="name" />
+       <result column="description" property="description" />
+    
+  </resultMap>
+ 
+  
+  <!-- 查询最新版本的code，name，description。description是将当前版本以后的所有版本升级说明拼接起来 -->
+  <select id="latestVersionInfoByCode" resultMap="BaseResultMap">
+     select a.versioncode,a.versionname,(select GROUP_CONCAT(description) from ProductVersion where versioncode > #{versionCode} and productcode = #{productCode}) as description 
+     from productversion a left join production b 
+     on a.productcode = b.productcode 
+     where a.versioncode = (select MAX(versioncode) from ProductVersion where productcode = #{productCode}) and b.productcode = #{productCode} and b.producttype = #{productType}
+  </select>
+  
+  <!-- 查询最新版本的code，name，description。description是将当前版本以后的所有版本升级说明拼接起来 -->
+  <select id="latestVersionInfoByName" resultMap="BaseResultMap">
+     select a.versioncode,a.versionname,(select GROUP_CONCAT(description) from ProductVersion where versionname > #{versionName} and productcode = #{productCode}) as description 
+     from productversion a left join production b 
+     on a.productcode = b.productcode 
+     where a.versionname = (select MAX(versionName) from ProductVersion where productcode = #{productCode}) and b.productcode = #{productCode} and b.producttype = #{productType}
+  </select>
+  
+  <!-- 查询当前产品下的所有版本 -->
+  <select id="getAllVersions" resultType="net.tfedu.productUpdate.entity.ProductVersionEntity">
+      select productcode,versioncode as code,versionname as name,description, versionid,createtime from productversion 
+      where productcode = #{productCode}
+      order by createtime
+  </select>
+  
+  <!--  版本检索    -->
+  <select id="searchVersions" resultType="net.tfedu.productUpdate.entity.ProductVersionEntity">
+      select productcode,versioncode as code,versionname as name,description, versionid,createtime from productversion where productcode = #{productCode}
+      <if test="keyWord != null and keyWord != ''">
+          and versionCode like concat('%',#{keyWord},'%')
+      </if>
+      order by createtime
+  </select>
+  
+  <!-- 删除版本 -->
+  <delete id="deleteOneVersion">
+    delete from productversion where productcode = #{productCode} and versioncode = #{versionCode}
+  </delete>
+  
+  <!-- 查询一个版本的信息 -->
+  <select id="getOneVersion" resultType="net.tfedu.productUpdate.entity.ProductVersion">
+    select versioncode as code,versionname as name,description from productversion where productcode = #{productCode} and versioncode = #{versionCode}
+  </select>
+  
+  <!-- 修改一个版本信息 -->
+  <update id="editOneVersion">
+    update productversion set versionname = #{pVersion.name},description = #{pVersion.description} where productcode = #{productCode} and versioncode = #{pVersion.code} 
+  </update>
+  
+  <!-- 增加一个版本 -->
+  <insert id="addOneVersion">
+    insert into productversion(productcode,versioncode,versionid,versionname,description,createtime) values(#{productCode},#{pVersion.code},#{versionId},#{pVersion.name},#{pVersion.description},now())
+  </insert>
+</mapper>

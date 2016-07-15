@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.tfedu.productUpdate.dao.ProductionMapper" >
+  
+  <!-- 查询所有的产品信息 -->
+  <select id="getAllProducts" resultType="net.tfedu.productUpdate.entity.Production">
+     select productcode,productname,producttype,createtime from production order by createtime
+  </select>
+  
+  <!-- 根据产品code，查询一个产品的详细信息-->
+  <select id="getOneProduct" resultType="net.tfedu.productUpdate.entity.Production">
+     select productcode,productname,producttype,createtime from production where productcode = #{productCode}
+  </select>
+  
+  <!-- 增加一个产品信息 -->
+  <insert id="addOneProduct">
+    insert into production values(#{productCode},#{productName},#{productType},now())
+  </insert>
+  
+  <!-- 编辑一个产品名称 -->
+  <update id="editOneProduct">
+    update production set productname = #{productName} where productcode =#{productCode}
+  </update>
+  
+  <!-- 删除一个产品 -->
+  <delete id="deleteOneProduct">
+    delete from production where productcode = #{productCode}
+  </delete>
+  
+  <!-- 检索 -->
+  <select id="searchProducts" resultType="net.tfedu.productUpdate.entity.Production">
+    select productcode,productname,producttype,createtime from production 
+    <if test="keyword != null and keyword != ''">
+      where productcode like CONCAT('%',#{keyword},'%')
+    </if>
+    order by createtime
+  </select>
+  
+</mapper>

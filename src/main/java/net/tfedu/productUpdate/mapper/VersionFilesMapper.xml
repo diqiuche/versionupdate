@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.tfedu.productUpdate.dao.VersionFilesMapper" >
+  <resultMap id="BaseResultMap" type="net.tfedu.productUpdate.entity.VersionFiles" >
+       <result column="filename" property="filename" />
+       <result column="address" property="address" />
+       <result column="location" property="location" />
+       <result column="filetype" property="filetype" />
+       <result column="filesize" property="filesize" />
+       <result column="isreg" property="isreg" />
+       <result column="deccompressfile" property="deccompressfile" />
+
+  </resultMap>
+  <!-- 根据productCode，productType，versioncode，查询当前版本之后的所有版本信息 -->
+  <select id="allUpdatedFilesByCode" resultMap="BaseResultMap">
+     select filename,address,location,filetype,filesize,isreg,deccompressfile 
+     from versionfiles a 
+     left join productversion b on a.versionid = b.versionid
+     left join production c on c.productcode = b.productcode
+     where b.versioncode > #{versionCode} and b.productcode = upper(#{productCode}) and c.productType = #{productType}
+     order by a.createtime desc
+  </select>
+  
+  <!-- 根据productCode，productType，versionname，查询当前版本之后的所有版本信息 -->
+  <select id="allUpdatedFilesByName" resultMap="BaseResultMap">
+     select filename,address,location,filetype,filesize,isreg,deccompressfile 
+     from versionfiles a 
+     left join productversion b on a.versionid = b.versionid
+     left join production c on c.productcode = b.productcode
+     where b.versionname > #{versionName} and b.productcode = #{productCode} and c.productType = #{productType}
+     order by a.createtime desc
+  </select>
+  
+  <!-- 查询版本下的所有文件   -->
+  <select id="getAllFiles" resultType="net.tfedu.productUpdate.entity.VersionFilesEntity">
+      select versionid,filename,address,location,filetype,filesize,isreg,deccompressfile,createtime from versionfiles 
+      where versionid = #{versionId}
+      order by createtime
+  </select>
+  
+  <!-- 根据关键字查询所有文件  -->
+  <select id="searchFiles" resultType="net.tfedu.productUpdate.entity.VersionFilesEntity">
+      select versionid,filename,address,location,filetype,filesize,isreg,deccompressfile,createtime from versionfiles
+      where versionid = #{versionId}
+      <if test="keyWord != null and keyWord != ''">
+          and filename like concat('%',#{keyWord},'%')
+      </if>
+      order by createtime
+  </select>
+  
+  <!-- 根据路径和文件名，查询一个文件 -->
+  <select id="getOneFile" resultType="net.tfedu.productUpdate.entity.VersionFiles">
+    select * from versionfiles where versionid = #{versionId} and filename = #{fileName} and location = #{location}
+  </select>
+  
+  <!-- 增加一个文件  -->
+  <insert id="addOneFile" >
+      insert into versionfiles (versionid,filename,address,location,filetype,filesize,isreg,deccompressfile,createtime) 
+      values(#{versionId},#{vFile.filename},#{vFile.address},#{vFile.location},#{vFile.filetype},#{vFile.filesize},#{vFile.isreg},
+      #{vFile.deccompressfile},now())
+  </insert>
+  
+  <!-- 删除一个文件 -->
+  <delete id="deleteOneFile">
+    delete from versionfiles where versionid = #{versionId} and filename = #{fileName}
+  </delete>
+  
+  <!-- 查询所有路径，将当前版本下的路径放在第一个 -->
+  <select id="getAllPaths" resultType="String">
+    select distinct location from versionfiles order by (versionId = #{versionId}) desc
+  </select>
+  
+</mapper>

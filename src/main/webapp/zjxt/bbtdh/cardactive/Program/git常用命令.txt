@@ -1,0 +1,53 @@
+
+一、安装git软件
+
+二、建立本地仓库，远程仓库，并把两者进行关联
+
+1 创建本地仓库
+   
+   选定一个本地目录，打开GIt Bash，执行 git init，就创建了一个空的本地仓库。 
+
+   若是没有生成.gitignore文件，则运行命令： touch .gitignore，可以生成忽略文件。
+
+2 建立web项目
+
+3 git add ssm(文件夹)或者具体文件 a.txt,b.xml等。
+
+4 git commit -m "create a new project" 提交到本地，后面是注释
+
+5 在github上建立一个远程仓库，命名为ssm
+
+6 git remote add origin https://github.com/Romama/SSMDemo.git (本地仓库 与 远程仓库相关联)
+
+7 git push -u origin master （提交到远程分支，第一个次提交时，加上 -u，之后的提交 git push origin master 即可，第一次提交时，远程仓库中不能存在本地仓库中没有的内容 ）
+
+8 git checkout -b develop （新建本地分支）
+
+9 git push origin develop (将新建的develop分支push到远程仓库，这样，在github上就增加了一个分支)
+
+9 git checkout develop （切换分支，前提是分支存在）
+
+10 git status (查看当前提交状态)
+
+11 git merge develop （合并分支）
+
+12 git pull (获取远程分支的最新内容)
+
+三、远程仓库已经存在，从远程仓库克隆一个分支到本地
+
+
+1 git clone -b develop_resource https://github.com/Romama/SSMDemo.git
+
+
+
+四、改动过.gitignore文件后，使其生效
+
+   .gitignore只能忽略那些原来没有被track的文件，如果某些文件已经被纳入了版本管理中，则修改.gitignore是无效的。
+
+   那么解决方法就是先把本地缓存删除（改变成未track状态），然后再提交：
+
+   git rm -r --cached .
+   git add .
+   git commit -m "update .gitignore"
+
+

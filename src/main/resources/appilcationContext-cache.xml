@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache updateCheck="false" name="txswx-ehcache">
+    <diskStore path="java.io.tmpdir"/>
+    <!-- DefaultCache setting. -->
+    <defaultCache maxEntriesLocalHeap="10000" eternal="false" timeToIdleSeconds="300" timeToLiveSeconds="600"
+                  overflowToDisk="true" maxEntriesLocalDisk="100000"/>
+                  
+      <!-- 登录用户token对应对象的缓存 -->              
+    <cache name="UserSimpleCache" maxElementsInMemory="900000" timeToIdleSeconds="86400" overflowToDisk="false" diskPersistent="false"/>
+    <!-- 缓存对象的token -->  
+    <cache name="TokenCache" maxElementsInMemory="90000" timeToIdleSeconds="86400" overflowToDisk="false" diskPersistent="false"/>  
+
+    <!-- 被踢出的token，保留1小时 -->  
+    <cache name="KickOutTokenCache" maxElementsInMemory="90000" timeToIdleSeconds="3600" overflowToDisk="false" diskPersistent="false"/>  
+   
+  
+    <!-- 活跃用户，为单点登录的ticket所用，保留1小时 -->  
+    <cache name="ticketCache" maxElementsInMemory="90000" timeToIdleSeconds="3600" overflowToDisk="false" diskPersistent="false"/>  
+    <!-- 空闲时间保留1天，如果一直活跃，基本是长期存在了 -->
+    <cache name="usernamesCache" maxElementsInMemory="900000" timeToIdleSeconds="86400" overflowToDisk="false" diskPersistent="false"/>  
+    
+    <!--  手机验证码的缓存 -->
+    <cache name="VerificationCodeCache" maxElementsInMemory="900000" timeToIdleSeconds="86400" overflowToDisk="false" diskPersistent="false"/>
+    
+    <!--业务信息的缓存  -->
+    <cache name="businessCache" maxElementsInMemory="900000" timeToIdleSeconds="86400" overflowToDisk="false" diskPersistent="false"/>
+    
+    
+</ehcache>
